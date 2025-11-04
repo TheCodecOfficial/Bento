@@ -3,13 +3,14 @@
 A Blender to [Nori](https://github.com/wjakob/nori) export plugin. Inspired by [BlenderNoriPlugin](https://github.com/Phil26AT/BlenderNoriPlugin) but written from scratch for Blender 4.5+ with some additional features.
 
 ## Features
+
 - Exports Blender scenes to Nori (XML) format
 - Exports meshes as obj
     - Supports meshes with multiple materials
 - Exports basic materials (diffuse, glossy/microfacet)
 - Exports emissive materials as area lights
-- Option to export all referenced textures as PNG or JPEG
-- Simple settings for resolution, SPP, integrator
+- Option to export all referenced image textures as PNG or JPEG
+- Simple settings for resolution, SPP, integrator, reconstruction filter, etc.
 - Easily extensible for other simple nodes/shaders
 - Export point lights
 
@@ -23,7 +24,7 @@ A Blender to [Nori](https://github.com/wjakob/nori) export plugin. Inspired by [
 
 ## Usage
 
-To export a scene as a Nori XML, go to `File > Export > Nori (.xml)`. Choose a path and filename, and adjust the export settings as needed. Then click `Export Nori XML`.
+To export a scene as a Nori XML, first make sure you're in object mode. Then go to `File > Export > Nori (.xml)`. Choose a path and filename, and adjust the export settings as needed. Then click `Export Nori XML`.
 
 ![export settings](export_settings.png)
 
@@ -31,21 +32,23 @@ To export a scene as a Nori XML, go to `File > Export > Nori (.xml)`. Choose a p
 
 ### Shaders
 
-Currently, only diffuse and glossy (microfacet) shaders are supported.
+Currently, only diffuse and glossy (microfacet) shaders are supported. Glossy shaders with a very low roughness will get converted to a mirror shader in Nori.
 
 > [!NOTE]
 > Blender's glossy shader doesn't have a diffuse lobe. To get equivalent behavior in Nori, kd automatically gets set to black (0, 0, 0). Also, the color parameter of Blender's glossy shader has no counterpart in Nori's microfacet shader, so it will be ignored. Set it to white (1, 1, 1) to match Nori's behavior (the default in blender is (0.8, 0.8, 0.8)!). Finally, set the distribution to "Beckmann" to match Nori's implementation.
 
 ### Lights
 
-Only point lights and area lights (emission shaders) are supported.
+Only point lights and emission shaders are supported.
 
 ### Textures
 
 There is an option to export all textures, but no texture tags are created in the XML since image textures are not a part of Nori's default feature set. You will need to implement this yourself if you need it.
 
+There is limited support for checkerboard textures.
+
 > [!TIP]
-> The script automatically generates a relative path to each texture (see the `node_to_xml` function). If you implement image textures in Nori, you can use this path to load the texture. TODO: Make this section clearer
+> The script automatically generates a relative path to each texture (see the `handle_special_cases` function in `export_materials.py`). If you implement image textures in Nori, you can use that path to load the texture.
 
 ## Extending Shader Support
 
