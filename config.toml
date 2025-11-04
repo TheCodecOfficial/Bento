@@ -1,12 +1,14 @@
 [node_tag_map]
 BSDF_DIFFUSE = "bsdf"
 BSDF_GLOSSY = "bsdf"
+BSDF_GLASS = "bsdf"
 EMISSION = "emitter"
 TEX_CHECKER = "texture"
 
 [node_map]
 BSDF_DIFFUSE = "diffuse"
 BSDF_GLOSSY = "microfacet"
+BSDF_GLASS = "dielectric"
 EMISSION = "area"
 TEX_CHECKER = "checkerboard_color"
 
@@ -14,6 +16,7 @@ TEX_CHECKER = "checkerboard_color"
 BSDF_DIFFUSE.Color = "albedo"
 BSDF_GLOSSY.Color = "kd"
 BSDF_GLOSSY.Roughness = "alpha"
+BSDF_GLASS.IOR = "intIOR"
 TEX_CHECKER.Color1 = "value1"
 TEX_CHECKER.Color2 = "value2"
 
