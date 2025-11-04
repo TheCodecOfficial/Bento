@@ -11,7 +11,7 @@ A Blender to [Nori](https://github.com/wjakob/nori) export plugin. Inspired by [
 - Option to export all referenced textures as PNG or JPEG
 - Simple settings for resolution, SPP, integrator
 - Easily extensible for other simple nodes/shaders
-- TODO: Export point lights
+- Export point lights
 
 ## Installation
 
@@ -23,9 +23,9 @@ A Blender to [Nori](https://github.com/wjakob/nori) export plugin. Inspired by [
 
 ## Usage
 
-To export a scene as a Nori XML, go to `File > Export > Nori (.xml)`. Choose a path and filename, and adjust the export settings as needed.
+To export a scene as a Nori XML, go to `File > Export > Nori (.xml)`. Choose a path and filename, and adjust the export settings as needed. Then click `Export Nori XML`.
 
-![](export_settings.png)
+![export settings](export_settings.png)
 
 ## Limitations
 
@@ -34,15 +34,18 @@ To export a scene as a Nori XML, go to `File > Export > Nori (.xml)`. Choose a p
 Currently, only diffuse and glossy (microfacet) shaders are supported.
 
 > [!NOTE]
-> Blender's glossy shader doesn't have a diffuse lobe. To get equivalent behavior in Nori, kd automatically gets set to black (0, 0, 0). The color parameter of the glossy shader has no counterpart in Nori's microfacet shader, so it will be ignored. Set it to white (1, 1, 1) to match Nori's behavior (the default in blender is (0.8, 0.8, 0.8)!).
+> Blender's glossy shader doesn't have a diffuse lobe. To get equivalent behavior in Nori, kd automatically gets set to black (0, 0, 0). Also, the color parameter of Blender's glossy shader has no counterpart in Nori's microfacet shader, so it will be ignored. Set it to white (1, 1, 1) to match Nori's behavior (the default in blender is (0.8, 0.8, 0.8)!). Finally, set the distribution to "Beckmann" to match Nori's implementation.
 
 ### Lights
 
-Only area lights (emission shaders) are supported. TODO: point lights.
+Only point lights and area lights (emission shaders) are supported.
 
 ### Textures
 
-There is an option to export all textures, but no texture tags are created in the XML since image textures are not a part of Nori's core feature set. You will need to implement this yourself if you need it.
+There is an option to export all textures, but no texture tags are created in the XML since image textures are not a part of Nori's default feature set. You will need to implement this yourself if you need it.
+
+> [!TIP]
+> The script automatically generates a relative path to each texture (see the `node_to_xml` function). If you implement image textures in Nori, you can use this path to load the texture. TODO: Make this section clearer
 
 ## Extending Shader Support
 
